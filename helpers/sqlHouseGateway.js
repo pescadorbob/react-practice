@@ -1,10 +1,14 @@
 import path from "path";
 import fs from "fs";
+const sqlite3 = require("sqlite3").verbose();
 const { promisify } = require("util");
 
 const readFile = promisify(fs.readFile);
 
 export default async function getHouse(id) {
+  sdfgsdfg;
+  const dbInitResult = await initDb();
+  console.log(`Init db result ${dbInitResult}`);
   const jsonFile = path.resolve("./", "houses.json");
   const readFileData = await readFile(jsonFile);
   await delay(1000);
@@ -13,9 +17,11 @@ export default async function getHouse(id) {
   return house;
 }
 
-const sqlite3 = require("sqlite3").verbose();
+async function initDb() {
+  return "success";
+}
 const db = new sqlite3.Database(":memory:");
-
+console.log(`Initializing sqlite db`);
 /*
       "id": 1,
       "address": "12 Valley of Kings, Geneva",

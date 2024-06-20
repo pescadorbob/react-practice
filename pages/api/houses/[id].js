@@ -1,8 +1,9 @@
-import { getHouse } from "../../../helpers/fileHouseGateway";
+// import { getHouse } from "../../../helpers/fileHouseGateway";
+import { getHouse } from "../../../helpers/sqlHouseGateway";
 
 export default async function handler(req, res) {
   const id = parseInt(req?.query?.id);
-  const house = await getHouse(id);
+  // const house = await getHouse(id);
   if (house) {
     res.setHeader("Content-Type", "application/json");
     res.status(200).json(house);

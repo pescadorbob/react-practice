@@ -1,16 +1,19 @@
 import path from "path";
 import fs from "fs";
+import { HouseGateway } from "../../../helpers/fileHouseGateway";
 
 const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const hg = new HouseGateway();
 
 export default async function handler(req, res) {
   const method = req?.method;
   const jsonFile = path.resolve("./", "houses.json");
   const readFileData = await readFile(jsonFile);
-  const houses = JSON.parse(readFileData).houses;
+  const houses = await hg.getHouses(); //JSON.parse(readFileData).houses;
+  console.log(`Houses:[${houses}]`);
   await delay(1000);
 
   switch (method) {
