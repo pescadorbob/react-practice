@@ -11,6 +11,7 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export class HouseGateway {
   constructor() {
     this.jsonFile = path.resolve("./", "houses.json");
+    this.db = new sqlite3.Database(":memory:");
   }
   async getHouse(id) {
     const readFileData = await readFile(this.jsonFile);
@@ -44,28 +45,9 @@ export class HouseGateway {
     const readFileData = await readFile(this.jsonFile);
 
     const houses = JSON.parse(readFileData).houses;
-    const db = new sqlite3.Database(":memory:");
     console.log(`Initializing sqlite db`);
-    /*
-          "id": 1,
-          "address": "12 Valley of Kings, Geneva",
-          "country": "Switzerland",
-          "description": "A superb detached Victorian property on one of the town's finest roads, within easy reach of Barnes Village. The property has in excess of 6000 sq/ft of accommodation, a driveway and landscaped garden.",
-          "price": 900000,
-          "photo": "277667"
-    
-    */
-    db.serialize(() => {
-      /*
-      CREATE TABLE contacts (
-        contact_id INTEGER PRIMARY KEY,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        phone TEXT NOT NULL UNIQUE
-    );
-    */
-      db.run(`CREATE TABLE house (
+    this.db.serialize(() => {
+      this.db.run(`CREATE TABLE house (
            id INTEGER PRIMARY KEY, 
            address TEXT NOT NULL, 
            country TEXT NOT NULL, 
@@ -74,7 +56,7 @@ export class HouseGateway {
            photo NUMBER NOT NULL
           );`);
 
-      const stmt = db.prepare(`INSERT INTO 
+      const stmt = this.db.prepare(`INSERT INTO 
         house (id,address,country,description,price,photo)
          VALUES (?,?,?,?,?,?)`);
 
@@ -90,7 +72,7 @@ export class HouseGateway {
       });
       stmt.finalize();
 
-      db.each(
+      this.db.each(
         "SELECT id,address,country,description,price,photo FROM house",
         (err, row) => {
           console.log(
@@ -100,6 +82,6 @@ export class HouseGateway {
       );
     });
 
-    db.close();
+    this.db.close();
   }
 }

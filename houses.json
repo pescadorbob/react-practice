@@ -39,6 +39,18 @@
       "description": "This luxurious three bedroom flat is contemporary in style and benefits from the use of a gymnasium and a reserved underground parking space.",
       "price": 400500,
       "photo": "164558"
+    },
+    {
+      "id": 6,
+      "address": "32 Valley Way, New York",
+      "country": "USA",
+      "price": 1000000
+    },
+    {
+      "id": 7,
+      "address": "32 Valley Way, New York",
+      "country": "USA",
+      "price": 1000000
     }
   ]
 }
