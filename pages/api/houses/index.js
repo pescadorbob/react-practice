@@ -3,9 +3,7 @@ import fs from "fs";
 import { HouseGateway } from "../../../helpers/fileHouseGateway";
 
 const { promisify } = require("util");
-const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const hg = new HouseGateway();
 
 export default async function handler(req, res) {
