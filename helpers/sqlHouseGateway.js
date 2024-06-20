@@ -9,23 +9,23 @@ const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export class HouseGateway {
-  constructor(){    
+  constructor() {
     this.jsonFile = path.resolve("./", "houses.json");
   }
-  async getHouse (id) {
+  async getHouse(id) {
     const readFileData = await readFile(this.jsonFile);
     await delay(1000);
     const houses = JSON.parse(readFileData).houses;
     const house = houses.find((rec) => rec.id === id);
     return house;
-  };
-  async getHouses () {
+  }
+  async getHouses() {
     const readFileData = await readFile(this.jsonFile);
     await delay(1000);
     const houses = JSON.parse(readFileData).houses;
     return houses;
-  };
-  async save(house){
+  }
+  async save(house) {
     const houses = await this.getHouses();
     house.id = Math.max(...houses.map((h) => h.id)) + 1;
     const newHousesArray = [...houses, house];
@@ -39,9 +39,11 @@ export class HouseGateway {
         2
       )
     );
-
   }
-  initDb(){
+  async initDb() {
+    const readFileData = await readFile(this.jsonFile);
+
+    const houses = JSON.parse(readFileData).houses;
     const db = new sqlite3.Database(":memory:");
     console.log(`Initializing sqlite db`);
     /*
@@ -71,29 +73,33 @@ export class HouseGateway {
            price NUMBER NOT NULL,
            photo NUMBER NOT NULL
           );`);
-    
+
       const stmt = db.prepare(`INSERT INTO 
         house (id,address,country,description,price,photo)
          VALUES (?,?,?,?,?,?)`);
-      for (let i = 0; i < 10; i++) {
-        stmt.run(
-          i,
-          `address ${i}`,
-          `country ${i}`,
-          `description ${i}`,
-          i * 100000,
-          12345
-        );
-      }
-      stmt.finalize();
-    
-      db.each("SELECT id,address FROM house", (err, row) => {
-        console.log(`Row:${row.id}: ${row.address}`);
-      });
-    });
-    
-    db.close();
-    
-  }
-};
 
+      houses.forEach((element) => {
+        stmt.run(
+          element.id,
+          element.address,
+          element.country,
+          element.description,
+          element.price,
+          element.photo
+        );
+      });
+      stmt.finalize();
+
+      db.each(
+        "SELECT id,address,country,description,price,photo FROM house",
+        (err, row) => {
+          console.log(
+            `Row:${row.id}: ${row.address} ${row.country} ${row.description} ${row.price} ${row.photo}`
+          );
+        }
+      );
+    });
+
+    db.close();
+  }
+}
