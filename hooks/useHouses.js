@@ -13,24 +13,26 @@ const useHouses = () => {
     };
     fetchHouses();
   }, [get]);
-  
-  const postBid = async (bid) => {
-    await fetch(`/api/bids/${bid.houseId}`, {
+
+  const postHouse = async (house) => {
+    console.log(house);
+    console.log(`House:[${house}]`);
+    await fetch(`/api/houses/${house.id}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(bid),
+      body: JSON.stringify(house),
     });
   };
 
-  const addBid = (bid) => {
-    postBid(bid);
-    setBids([...bids, bid]);
+  const addHouse = (house) => {
+    postHouse(house);
+    setHouses([...houses, house]);
   };
 
-  return { houses, setHouses, loadingState };
+  return { houses, addHouse, loadingState };
 };
 
 export default useHouses;

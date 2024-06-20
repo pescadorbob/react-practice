@@ -6,7 +6,8 @@ const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 
 export default async function getHouse(id) {
-  sdfgsdfg;
+  
+
   const dbInitResult = await initDb();
   console.log(`Init db result ${dbInitResult}`);
   const jsonFile = path.resolve("./", "houses.json");
@@ -32,24 +33,35 @@ console.log(`Initializing sqlite db`);
 
 */
 db.serialize(() => {
-  db.run(`CREATE TABLE house 
-      (id int, 
-       address TEXT, 
-       country TEXT, 
-       description TEXT,
-       price NUMBER,
-       photo NUMBER 
-      )`);
+  /*
+  CREATE TABLE contacts (
+    contact_id INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    phone TEXT NOT NULL UNIQUE
+);
+*/
+  db.run(`CREATE TABLE house (
+       id INTEGER PRIMARY KEY, 
+       address TEXT NOT NULL, 
+       country TEXT NOT NULL, 
+       description TEXT NOT NULL,
+       price NUMBER NOT NULL,
+       photo NUMBER NOT NULL
+      );`);
 
-  const stmt = db.prepare("INSERT INTO house VALUES (?,?,?,?,?,?)");
+  const stmt = db.prepare(`INSERT INTO 
+    house (id,address,country,description,price,photo)
+     VALUES (?,?,?,?,?,?)`);
   for (let i = 0; i < 10; i++) {
     stmt.run(
       i,
       `address ${i}`,
       `country ${i}`,
-      `description ${description}`,
+      `description ${i}`,
       i * 100000,
-      photo
+      12345
     );
   }
   stmt.finalize();

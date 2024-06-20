@@ -4,23 +4,32 @@ import HouseRow from "./houseRow";
 import LoadingIndicator from "./loadingIndicator";
 
 const HouseList = () => {
-  const { houses, setHouses, loadingState } = useHouses();
+  const { houses, addHouse, loadingState } = useHouses();
 
   if (loadingState !== loadingStatus.loaded)
     return <LoadingIndicator loadingState={loadingState} />;
 
-  const addHouse = () => {
-    setHouses([
-      ...houses,
-      {
-        id: 3,
-        address: "32 Valley Way, New York",
-        country: "USA",
-        price: 1000000,
-      },
-    ]);
-  };
+  const emptyHouse = {
+    id: 6,
+    address: "32 Valley Way, New York",
+    country: "USA",
+    price: 1000000,
+  }
+  // const addHouse = () => {
+  //   setHouses([
+  //     ...houses,
+  //     {
+  //       id: 3,
+  //       address: "32 Valley Way, New York",
+  //       country: "USA",
+  //       price: 1000000,
+  //     },
+  //   ]);
+  // };
 
+  const onNewHouseSubmitClick = () => {
+    addHouse(emptyHouse);
+  };
   return (
     <>
       <div className="row mb-2">
@@ -42,7 +51,7 @@ const HouseList = () => {
           ))}
         </tbody>
       </table>
-      <button className="btn btn-primary" onClick={addHouse}>
+      <button className="btn btn-primary" onClick={onNewHouseSubmitClick}>
         Add
       </button>
     </>
