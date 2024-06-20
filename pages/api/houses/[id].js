@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import { getHouse } from "../../../helpers/fileHouseGateway";
 const { promisify } = require("util");
 
 const readFile = promisify(fs.readFile);
@@ -16,7 +17,8 @@ export default async function handler(req, res) {
   }
   console.log(`GET /api/houses/${id} status: 200`);
 }
-async function getHouse(id) {
+
+async function getHouseOld(id) {
   const jsonFile = path.resolve("./", "houses.json");
   const readFileData = await readFile(jsonFile);
   await delay(1000);
@@ -24,4 +26,3 @@ async function getHouse(id) {
   const house = houses.find((rec) => rec.id === id);
   return house;
 }
-
