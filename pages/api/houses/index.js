@@ -29,6 +29,7 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const recordFromBody = req?.body;
+        console.log(`RecordFromBody:[${recordFromBody}]`);
         // HouseGateway.save(house);
         recordFromBody.id = Math.max(...houses.map((h) => h.id)) + 1;
         const newHousesArray = [...houses, recordFromBody];
