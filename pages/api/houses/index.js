@@ -28,6 +28,7 @@ export default async function handler(req, res) {
 
     case "POST":
       try {
+        return;
         const recordFromBody = req?.body;
         console.log(`RecordFromBody:[${recordFromBody}]`);
         // HouseGateway.save(house);
