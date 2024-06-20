@@ -10,10 +10,9 @@ const hg = new HouseGateway();
 
 export default async function handler(req, res) {
   const method = req?.method;
-  const jsonFile = path.resolve("./", "houses.json");
-  const houses = await hg.getHouses(); //JSON.parse(readFileData).houses;
+
+  const houses = await hg.getHouses();
   console.log(`Houses:[${houses}]`);
-  await delay(1000);
 
   switch (method) {
     case "GET":
