@@ -1,5 +1,5 @@
-import { HouseGateway } from "../../../helpers/fileHouseGateway";
-// import { getHouse } from "../../../helpers/sqlHouseGateway";
+// import { HouseGateway } from "../../../helpers/fileHouseGateway";
+import { HouseGateway } from "../../../helpers/sqlHouseGateway";
 const houseGateway = new HouseGateway();
 
 export default async function handler(req, res) {

@@ -3,24 +3,47 @@ import fs from "fs";
 const sqlite3 = require("sqlite3").verbose();
 const { promisify } = require("util");
 
+const writeFile = promisify(fs.writeFile);
+
 const readFile = promisify(fs.readFile);
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export default async function getHouse(id) {
-  
+export class HouseGateway {
+  constructor(){
 
-  const dbInitResult = await initDb();
-  console.log(`Init db result ${dbInitResult}`);
-  const jsonFile = path.resolve("./", "houses.json");
-  const readFileData = await readFile(jsonFile);
-  await delay(1000);
-  const houses = JSON.parse(readFileData).houses;
-  const house = houses.find((rec) => rec.id === id);
-  return house;
-}
+    this.jsonFile = path.resolve("./", "houses.json");
+  }
+  async getHouse (id) {
+    const readFileData = await readFile(this.jsonFile);
+    await delay(1000);
+    const houses = JSON.parse(readFileData).houses;
+    const house = houses.find((rec) => rec.id === id);
+    return house;
+  };
+  async getHouses () {
+    const readFileData = await readFile(this.jsonFile);
+    await delay(1000);
+    const houses = JSON.parse(readFileData).houses;
+    return houses;
+  };
+  async save(house){
+    const houses = await this.getHouses();
+    house.id = Math.max(...houses.map((h) => h.id)) + 1;
+    const newHousesArray = [...houses, house];
+    writeFile(
+      this.jsonFile,
+      JSON.stringify(
+        {
+          houses: newHousesArray,
+        },
+        null,
+        2
+      )
+    );
 
-async function initDb() {
-  return "success";
-}
+  }
+};
+
 const db = new sqlite3.Database(":memory:");
 console.log(`Initializing sqlite db`);
 /*
