@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   const method = req?.method;
 
   const houses = await hg.getHouses();
-  console.log(`Houses:[${houses}]`);
 
   switch (method) {
     case "GET":
@@ -30,6 +29,7 @@ export default async function handler(req, res) {
     case "POST":
       try {
         const recordFromBody = req?.body;
+        // HouseGateway.save(house);
         recordFromBody.id = Math.max(...houses.map((h) => h.id)) + 1;
         const newHousesArray = [...houses, recordFromBody];
         writeFile(

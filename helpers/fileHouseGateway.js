@@ -21,4 +21,20 @@ export class HouseGateway {
     const houses = JSON.parse(readFileData).houses;
     return houses;
   };
+  async save(house){
+    const houses = await HouseGateway.getHouses();
+    recordFromBody.id = Math.max(...houses.map((h) => h.id)) + 1;
+    const newHousesArray = [...houses, recordFromBody];
+    writeFile(
+      jsonFile,
+      JSON.stringify(
+        {
+          houses: newHousesArray,
+        },
+        null,
+        2
+      )
+    );
+
+  }
 };
