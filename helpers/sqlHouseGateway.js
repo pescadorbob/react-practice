@@ -8,9 +8,8 @@ const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export class SqlHouseGateway {
-  constructor(){
-
+export class HouseGateway {
+  constructor(){    
     this.jsonFile = path.resolve("./", "houses.json");
   }
   async getHouse (id) {
