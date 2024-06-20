@@ -6,7 +6,7 @@ const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export default async function userHandler(req, res) {
+export default async function handler(req, res) {
   const houseId = parseInt(req?.query?.houseId);
   const method = req?.method;
   const jsonFile = path.resolve("./", "bids.json");

@@ -5,7 +5,7 @@ const { promisify } = require("util");
 const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export default async function userHandler(req, res) {
+export default async function handler(req, res) {
   const id = parseInt(req?.query?.id);
   const jsonFile = path.resolve("./", "houses.json");
   const readFileData = await readFile(jsonFile);
