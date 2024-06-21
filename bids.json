@@ -83,6 +83,12 @@
       "bidder": "John",
       "amount": 203000,
       "id": 14
+    },
+    {
+      "houseId": 5,
+      "bidder": "sfgd",
+      "amount": 4535,
+      "id": 15
     }
   ]
 }

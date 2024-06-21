@@ -23,7 +23,7 @@ export class HouseGateway {
   }
   async getHouses() {
     console.log("Fetching houses");
-    await delay(1000);
+    await delay(500);
     const houses = [];
     this.db.all(
       "SELECT id,address,country,description,price,photo FROM house",
@@ -45,10 +45,27 @@ export class HouseGateway {
         }
       }
     );
-    await delay(1000);
+    await delay(500);
     return houses;
   }
 
+  async save2(house) {
+    console.log(`Saving sqlite db`);
+    house.id = Math.max(...houses.map((h) => h.id)) + 1;
+    this.db.serialize(() => {
+      const stmt = this.db.prepare(`INSERT INTO 
+        house (id,address,country,description,price,photo)
+         VALUES (?,?,?,?,?,?)`);
+    });
+    stmt.run(
+      house.id,
+      house.address,
+      house.country,
+      house.description,
+      house.price,
+      house.photo
+    );
+  }
   async save(house) {
     const houses = await this.getHouses();
     house.id = Math.max(...houses.map((h) => h.id)) + 1;

@@ -44,7 +44,33 @@
       "id": 6,
       "address": "32 Valley Way, New York",
       "country": "USA",
-      "price": 1000000
+      "description": "Beautiful home in Oregon",
+      "price": 1000000,
+      "photo": 164558
+    },
+    {
+      "id": 7,
+      "address": "32 Valley Way, New York",
+      "country": "USA",
+      "description": "Beautiful home in Oregon",
+      "price": 1000000,
+      "photo": 164558
+    },
+    {
+      "id": 8,
+      "address": "32 Valley Way, New York",
+      "country": "USA",
+      "description": "Beautiful home in Oregon",
+      "price": 1000000,
+      "photo": 164558
+    },
+    {
+      "id": 9,
+      "description": "Beautiful home in Oregon",
+      "address": "32 Valley Way, New York",
+      "country": "USA",
+      "price": 1000000,
+      "photo": 164558
     }
   ]
 }

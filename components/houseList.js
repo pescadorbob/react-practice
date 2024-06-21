@@ -5,28 +5,17 @@ import LoadingIndicator from "./loadingIndicator";
 
 const HouseList = () => {
   const { houses, addHouse, loadingState } = useHouses();
-  console.log("HouseList=====================");
-  console.log(houses);
   if (loadingState !== loadingStatus.loaded)
     return <LoadingIndicator loadingState={loadingState} />;
 
   const emptyHouse = {
     id: 6,
+    description: "Beautiful home in Oregon",
     address: "32 Valley Way, New York",
     country: "USA",
     price: 1000000,
+    photo: 164558,
   }
-  // const addHouse = () => {
-  //   setHouses([
-  //     ...houses,
-  //     {
-  //       id: 3,
-  //       address: "32 Valley Way, New York",
-  //       country: "USA",
-  //       price: 1000000,
-  //     },
-  //   ]);
-  // };
 
   const onNewHouseSubmitClick = () => {
     addHouse(emptyHouse);
