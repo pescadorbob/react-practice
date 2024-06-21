@@ -5,7 +5,8 @@ import LoadingIndicator from "./loadingIndicator";
 
 const HouseList = () => {
   const { houses, addHouse, loadingState } = useHouses();
-
+  console.log("HouseList=====================");
+  console.log(houses);
   if (loadingState !== loadingStatus.loaded)
     return <LoadingIndicator loadingState={loadingState} />;
 

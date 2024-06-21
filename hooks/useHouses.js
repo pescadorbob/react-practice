@@ -9,8 +9,11 @@ const useHouses = () => {
   useEffect(() => {
     const fetchHouses = async () => {
       const houses = await get();
+      console.log("**********************************Houses");
+      console.log(houses);
       setHouses(houses);
     };
+    console.log("Fetch Houses");
     fetchHouses();
   }, [get]);
 
@@ -32,7 +35,7 @@ const useHouses = () => {
     setHouses([...houses, house]);
   };
 
-  return { houses, addHouse, loadingState };
+  return { houses, setHouses, loadingState };
 };
 
 export default useHouses;

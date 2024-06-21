@@ -12,8 +12,9 @@ export class HouseGateway {
   constructor() {
     this.jsonFile = path.resolve("./", "houses.json");
     this.db = new sqlite3.Database(":memory:");
+    this.initialized = false;
   }
-  async getHouse(id) {
+  async getHouse(id, res) {
     const readFileData = await readFile(this.jsonFile);
     await delay(1000);
     const houses = JSON.parse(readFileData).houses;
@@ -21,11 +22,33 @@ export class HouseGateway {
     return house;
   }
   async getHouses() {
-    const readFileData = await readFile(this.jsonFile);
+    console.log("Fetching houses");
     await delay(1000);
-    const houses = JSON.parse(readFileData).houses;
+    const houses = [];
+    this.db.all(
+      "SELECT id,address,country,description,price,photo FROM house",
+      function (err, rows) {
+        if (!err) {
+          rows.forEach((row) => {
+            houses.push({
+              id: row.id,
+              address: row.address,
+              country: row.country,
+              description: row.description,
+              price: row.price,
+              photo: row.photo,
+            });
+          });
+        } else {
+          console.log("Error!");
+          throw new Error(`Error:${err}`);
+        }
+      }
+    );
+    await delay(1000);
     return houses;
   }
+
   async save(house) {
     const houses = await this.getHouses();
     house.id = Math.max(...houses.map((h) => h.id)) + 1;
@@ -42,6 +65,8 @@ export class HouseGateway {
     );
   }
   async initDb() {
+    if (this.initialized) return;
+    this.initialized = true;
     const readFileData = await readFile(this.jsonFile);
 
     const houses = JSON.parse(readFileData).houses;
@@ -82,6 +107,6 @@ export class HouseGateway {
       );
     });
 
-    this.db.close();
+    // this.db.close();
   }
 }

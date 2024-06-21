@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
-import { HouseGateway } from "../../../helpers/fileHouseGateway";
+// import { HouseGateway } from "../../../helpers/fileHouseGateway";
+import { HouseGateway } from "../../../helpers/sqlHouseGateway";
 
 const { promisify } = require("util");
 const writeFile = promisify(fs.writeFile);
@@ -8,9 +9,11 @@ const hg = new HouseGateway();
 
 export default async function handler(req, res) {
   const method = req?.method;
-
+  await hg.initDb();
   const houses = await hg.getHouses();
-
+  
+  console.log("got houses");
+  console.log(houses);
   switch (method) {
     case "GET":
       try {
