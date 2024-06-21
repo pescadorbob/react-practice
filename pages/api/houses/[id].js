@@ -1,7 +1,5 @@
-// import { HouseGateway } from "../../../helpers/fileHouseGateway";
-import { HouseGateway } from "../../../helpers/sqlHouseGateway";
-const houseGateway = new HouseGateway();
-houseGateway.initDb();
+import config from "../../config";
+const houseGateway = config().houseGateway;
 
 export default async function handler(req, res) {
   const id = parseInt(req?.query?.id);

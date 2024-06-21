@@ -49,37 +49,32 @@ export class HouseGateway {
     return houses;
   }
 
-  async save2(house) {
+  async save(house) {
     console.log(`Saving sqlite db`);
+    const houses = await this.getHouses();
     house.id = Math.max(...houses.map((h) => h.id)) + 1;
     this.db.serialize(() => {
       const stmt = this.db.prepare(`INSERT INTO 
         house (id,address,country,description,price,photo)
          VALUES (?,?,?,?,?,?)`);
+      stmt.run(
+        house.id,
+        house.address,
+        house.country,
+        house.description,
+        house.price,
+        house.photo
+      );
+      stmt.finalize();
+      this.db.each(
+        "SELECT id,address,country,description,price,photo FROM house",
+        (err, row) => {
+          console.log(
+            `Row:${row.id}: ${row.address} ${row.country} ${row.description} ${row.price} ${row.photo}`
+          );
+        }
+      );
     });
-    stmt.run(
-      house.id,
-      house.address,
-      house.country,
-      house.description,
-      house.price,
-      house.photo
-    );
-  }
-  async save(house) {
-    const houses = await this.getHouses();
-    house.id = Math.max(...houses.map((h) => h.id)) + 1;
-    const newHousesArray = [...houses, house];
-    writeFile(
-      this.jsonFile,
-      JSON.stringify(
-        {
-          houses: newHousesArray,
-        },
-        null,
-        2
-      )
-    );
   }
   async initDb() {
     if (this.initialized) return;

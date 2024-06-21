@@ -6,13 +6,13 @@ const useHouses = () => {
   const [houses, setHouses] = useState([]);
   const { get, loadingState } = useGetRequest("/api/houses");
 
+  const fetchHouses = async () => {
+    const houses = await get();
+    console.log("**********************************Houses");
+    console.log(houses);
+    setHouses(houses);
+  };
   useEffect(() => {
-    const fetchHouses = async () => {
-      const houses = await get();
-      console.log("**********************************Houses");
-      console.log(houses);
-      setHouses(houses);
-    };
     console.log("Fetch Houses");
     fetchHouses();
   }, [get]);
@@ -32,7 +32,8 @@ const useHouses = () => {
 
   const addHouse = (house) => {
     postHouse(house);
-    setHouses([...houses, house]);
+    fetchHouses();
+    
   };
 
   return { houses, addHouse, loadingState };
