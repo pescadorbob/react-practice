@@ -3,7 +3,6 @@ import fs from "fs";
 const sqlite3 = require("sqlite3").verbose();
 const { promisify } = require("util");
 
-
 const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -20,32 +19,33 @@ export class HouseGateway {
     const house = houses.find((rec) => rec.id === id);
     return house;
   }
-  async getHouses(minPrice=100000) {
+  async getHouses(minPrice = 100000) {
     console.log("Fetching houses");
     await delay(500);
     const houses = [];
-    this.db.all(
-      `SELECT id,address,country,description,price,photo 
-      FROM house 
-      WHERE price > ${minPrice}`,
-      function (err, rows) {
-        if (!err) {
-          rows.forEach((row) => {
-            houses.push({
-              id: row.id,
-              address: row.address,
-              country: row.country,
-              description: row.description,
-              price: row.price,
-              photo: row.photo,
-            });
+    const stmt = this.db
+      .prepare(`select id,address,country,description,price,photo
+      from house
+      where price > ?`);
+    stmt.all(minPrice, function (err, rows) {
+      if (!err) {
+        console.log("packaging houses");
+        rows.forEach((row) => {
+          houses.push({
+            id: row.id,
+            address: row.address,
+            country: row.country,
+            description: row.description,
+            price: row.price,
+            photo: row.photo,
           });
-        } else {
-          console.log("Error!");
-          throw new Error(`Error:${err}`);
-        }
+        });
+      } else {
+        console.log("Error!");
+        throw new Error(`Error:${err}`);
       }
-    );
+    });
+    stmt.finalize();
     await delay(500);
     return houses;
   }
@@ -68,10 +68,9 @@ export class HouseGateway {
         house.price,
         house.photo
       );
-      stmt.finalize();      
+      stmt.finalize();
     });
     await delay(100);
-
   }
   async initDb() {
     if (this.initialized) return;
