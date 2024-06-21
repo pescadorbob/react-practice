@@ -8,13 +8,11 @@ const writeFile = promisify(fs.writeFile);
 
 export default async function handler(req, res) {
   const method = req?.method;
-  const houses = await houseGateway.getHouses();
 
-  console.log("got houses");
-  console.log(houses);
   switch (method) {
     case "GET":
       try {
+        const houses = await houseGateway.getHouses();
         if (!houses) {
           res.status(404).send("Error: Request failed with status code 404");
         } else {

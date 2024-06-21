@@ -3,7 +3,6 @@ import fs from "fs";
 const sqlite3 = require("sqlite3").verbose();
 const { promisify } = require("util");
 
-const writeFile = promisify(fs.writeFile);
 
 const readFile = promisify(fs.readFile);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -50,6 +49,8 @@ export class HouseGateway {
   }
 
   async save(house) {
+    await delay(500);
+
     console.log(`Saving sqlite db`);
     const houses = await this.getHouses();
     house.id = Math.max(...houses.map((h) => h.id)) + 1;
@@ -65,16 +66,10 @@ export class HouseGateway {
         house.price,
         house.photo
       );
-      stmt.finalize();
-      this.db.each(
-        "SELECT id,address,country,description,price,photo FROM house",
-        (err, row) => {
-          console.log(
-            `Row:${row.id}: ${row.address} ${row.country} ${row.description} ${row.price} ${row.photo}`
-          );
-        }
-      );
+      stmt.finalize();      
     });
+    await delay(500);
+
   }
   async initDb() {
     if (this.initialized) return;

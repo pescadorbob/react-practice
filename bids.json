@@ -89,6 +89,12 @@
       "bidder": "sfgd",
       "amount": 4535,
       "id": 15
+    },
+    {
+      "houseId": 6,
+      "bidder": "asdf",
+      "amount": 545,
+      "id": 16
     }
   ]
 }

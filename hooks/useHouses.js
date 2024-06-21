@@ -8,8 +8,6 @@ const useHouses = () => {
 
   const fetchHouses = async () => {
     const houses = await get();
-    console.log("**********************************Houses");
-    console.log(houses);
     setHouses(houses);
   };
   useEffect(() => {
@@ -18,8 +16,6 @@ const useHouses = () => {
   }, [get]);
 
   const postHouse = async (house) => {
-    console.log(house);
-    console.log(`House:[${house}]`);
     await fetch(`/api/houses/${house.id}`, {
       method: "POST",
       headers: {
@@ -30,8 +26,8 @@ const useHouses = () => {
     });
   };
 
-  const addHouse = (house) => {
-    postHouse(house);
+  const  addHouse = async (house) => {
+    await postHouse(house);
     fetchHouses();
     
   };
