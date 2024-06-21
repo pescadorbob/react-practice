@@ -35,7 +35,7 @@ const useHouses = () => {
     setHouses([...houses, house]);
   };
 
-  return { houses, setHouses, loadingState };
+  return { houses, addHouse, loadingState };
 };
 
 export default useHouses;
