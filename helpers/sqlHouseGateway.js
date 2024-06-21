@@ -20,12 +20,14 @@ export class HouseGateway {
     const house = houses.find((rec) => rec.id === id);
     return house;
   }
-  async getHouses() {
+  async getHouses(minPrice=100000) {
     console.log("Fetching houses");
     await delay(500);
     const houses = [];
     this.db.all(
-      "SELECT id,address,country,description,price,photo FROM house",
+      `SELECT id,address,country,description,price,photo 
+      FROM house 
+      WHERE price > ${minPrice}`,
       function (err, rows) {
         if (!err) {
           rows.forEach((row) => {
@@ -49,7 +51,7 @@ export class HouseGateway {
   }
 
   async save(house) {
-    await delay(500);
+    await delay(100);
 
     console.log(`Saving sqlite db`);
     const houses = await this.getHouses();
@@ -68,7 +70,7 @@ export class HouseGateway {
       );
       stmt.finalize();      
     });
-    await delay(500);
+    await delay(100);
 
   }
   async initDb() {

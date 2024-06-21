@@ -12,13 +12,15 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const houses = await houseGateway.getHouses();
+        const minPrice = req?.query.minPrice;
+        console.log(minPrice);
+        const houses = await houseGateway.getHouses(minPrice);
         if (!houses) {
           res.status(404).send("Error: Request failed with status code 404");
         } else {
           res.setHeader("Content-Type", "application/json");
           res.status(200).send(JSON.stringify(houses, null, 2));
-          console.log("GET /api/houses  status: 200");
+          console.log(`GET /api/houses?minPrice=${minPrice} status: 200`);
         }
       } catch (e) {
         console.log("/api/houses error:", e);

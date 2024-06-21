@@ -4,10 +4,11 @@ import useGetRequest from "./useGetRequest";
 
 const useHouses = () => {
   const [houses, setHouses] = useState([]);
+  const [minPrice, setMinPrice] = useState([100000])
   const { get, loadingState } = useGetRequest("/api/houses");
 
   const fetchHouses = async () => {
-    const houses = await get();
+    const houses = await get(`minPrice=${minPrice}`);
     setHouses(houses);
   };
   useEffect(() => {
@@ -31,8 +32,12 @@ const useHouses = () => {
     fetchHouses();
     
   };
+  const filterHouse = async () => {
+    setMinPrice(minPrice);
+    fetchHouses();
+  }
 
-  return { houses, addHouse, loadingState };
+  return { houses, addHouse, loadingState , filterHouse, minPrice, setMinPrice};
 };
 
 export default useHouses;

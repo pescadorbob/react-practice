@@ -4,7 +4,8 @@ import HouseRow from "./houseRow";
 import LoadingIndicator from "./loadingIndicator";
 
 const HouseList = () => {
-  const { houses, addHouse, loadingState } = useHouses();
+  const { houses, addHouse, loadingState, filterHouse, minPrice, setMinPrice } =
+    useHouses();
   if (loadingState !== loadingStatus.loaded)
     return <LoadingIndicator loadingState={loadingState} />;
 
@@ -15,7 +16,7 @@ const HouseList = () => {
     country: "USA",
     price: 1000000,
     photo: 164558,
-  }
+  };
 
   const onNewHouseSubmitClick = () => {
     addHouse(emptyHouse);
@@ -26,6 +27,19 @@ const HouseList = () => {
         <h5 className="themeFontColor text-center">
           Houses currently on the market
         </h5>
+        <input
+          id="price"
+          className="h-100"
+          type="text"
+          value={minPrice}
+          onChange={(e) => setMinPrice( e.target.value )}
+          placeholder="MinPrice"
+        ></input>
+        <div className="col-2">
+          <button className="btn btn-primary" onClick={filterHouse}>
+            Add
+          </button>
+        </div>
       </div>
       <table className="table table-hover">
         <thead>
