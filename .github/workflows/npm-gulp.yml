@@ -2,27 +2,28 @@ name: NodeJS with Gulp
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ] # fires only on main branch
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # the docker container this runs in. It has all the tools needed.
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [18.x]  # we use node 18. We could add more if needed.
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4 # checks out hte code from this project.
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v3 # sets up node in the container
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
       run: |
-        npm install
-        npm run test
+        npm install # installs the dependencies
+        npm run lint # lints the project
+        npm run test # runs the tests. if tests fail, or coverage thresholds fail, the projects shows in red.
