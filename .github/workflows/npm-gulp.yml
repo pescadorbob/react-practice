@@ -22,8 +22,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Build  # installs the dependencies# lints the project # runs the tests. if tests fail, or coverage thresholds fail, the projects shows in red.
       run: |
-        npm install # installs the dependencies
-        npm run lint # lints the project
-        npm run test # runs the tests. if tests fail, or coverage thresholds fail, the projects shows in red.
+        npm install
+        npm run lint
+        npm run test
