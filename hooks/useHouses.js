@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import loadingStatus from "../helpers/loadingStatus";
 import useGetRequest from "./useGetRequest";
+import { act } from 'react-dom/test-utils';
 
 const useHouses = () => {
   const [houses, setHouses] = useState([]);
@@ -9,7 +10,9 @@ const useHouses = () => {
 
   const fetchHouses = async () => {
     const houses = await get(`minPrice=${minPrice}`);
-    setHouses(houses);
+    act(() =>{      
+      setHouses(houses);
+    })
   };
   useEffect(() => {
     console.log("Fetch Houses");

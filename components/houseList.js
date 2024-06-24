@@ -2,6 +2,7 @@ import loadingStatus from "../helpers/loadingStatus";
 import useHouses from "../hooks/useHouses";
 import HouseRow from "./houseRow";
 import LoadingIndicator from "./loadingIndicator";
+import { act } from 'react-dom/test-utils';
 
 const HouseList = () => {
   const { houses, addHouse, loadingState, filterHouse, minPrice, setMinPrice } =
